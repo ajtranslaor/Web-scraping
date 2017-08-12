@@ -1,5 +1,4 @@
-# java -Dwebdriver.gecko.driver=./Desktop/RStudio.app/geckodriver -jar desktop/RStudio.app/selenium-server-standalone-3.4.0.jar
-#java -Dwebdriver.chrome.driver=./Desktop/RStudio.app/chromedriver -jar desktop/RStudio.app/selenium-server-standalone-3.4.0.jar
+# java -jar desktop/RStudio.app/selenium-server-standalone-3.4.0.jar
 #Scraping the daily air quality of China's cities （2014-2017）
 require(xlsx)
 require(magrittr)
@@ -8,7 +7,7 @@ if (!require('devtools')) install.packages("devtools")
 if(!require(RSelenium)) devtools::install_github("ropensci/RSelenium")
 remDr <- remoteDriver(remoteServerAddr = "localhost" 
                       , port = 4444L
-                      , browserName = "chrome"
+                      , browserName = "phantomjs"
 )
 remDr$open()
 remDr$navigate("http://datacenter.mep.gov.cn/index!MenuAction.action?name=402880fb24e695b60124e6973db30011")
@@ -51,7 +50,7 @@ require(rio)
 require(RSelenium)
 remDr <- remoteDriver(remoteServerAddr = "localhost" 
                       , port = 4444L
-                      , browserName = "chrome"
+                      , browserName = "phantomjs"
 )
 remDr$open()
 remDr$navigate("http://datacenter.mep.gov.cn/index!MenuAction.action?name=12345678910123456789")
@@ -78,5 +77,13 @@ Finaldata<-newdata[!duplicated(newdata), ]
 cnames=paste("v",1:6,sep="")
 colnames(newdata)=cnames
 export(newdata, "/Users/aj/Desktop/AQ_Historical.dta")
+remDr$quit()
 #调用python模块
 system('/Library/Frameworks/Python.framework/Versions/3.6/bin/python3 /Users/aj/Desktop/1.py')
+
+# Open by PhantomJS
+remDr <- remoteDriver(browserName = "phantomjs")
+remDr$open(silent = T)
+url <-"http://www.baidu.com"
+remDr$navigate(url)
+remDr$screenshot(display = TRUE)
